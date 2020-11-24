@@ -3,7 +3,9 @@ package com.qwy.rxjava
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import io.reactivex.rxjava3.core.Notification
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.functions.Action
 import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -78,8 +80,55 @@ class MainActivity : AppCompatActivity() {
         // ----------------------------    PublishSubject  ------------------------------------ //
 
 
+        //Lambda argument should be moved out of parentheses
+        Observable.just("Hello")
+            .doOnNext { s ->
+                Log.e("QwyDo", "doOnNext   s : " + s)
+            }
+            .doAfterNext { s ->
+                Log.e("QwyDo", "doAfterNext   s : " + s)
+            }
+            .doOnComplete {
+                Log.e("QwyDo", "doOnComplete")
+            }
+            .doOnSubscribe {
+                Log.e("QwyDo", "doOnSubscribe")
+            }
+            .doAfterTerminate {
+                Log.e("QwyDo", "doAfterTerminate")
+            }
+            .doFinally {
+                Log.e("QwyDo", "doFinally")
+            }
+            .doOnEach { TODO("Not yet implemented") }
 
+            .doOnEach(object : Consumer<Notification<String>> {
+                override fun accept(stringNotification: Notification<String>?) {
+//                    System.out . println (” doOnEach:
+//                    "+(stringNotification . isOnNext ()? ” onNext”:stringNotification . isOnComplete( )
+//                    ?” onComplete ”:”onError” )) ;
 
+//                    Log.e("QwyDo","doOnEach : " +       if (stringNotification.isOnNext) 'onNext' else  )
+
+                }
+
+            })
+
+            .doOnLifecycle(object : Consumer<Disposable> {
+                override fun accept(t: Disposable?) {
+                    TODO("Not yet implemented")
+                }
+
+            }, object : Action {
+                override fun run() {
+                    TODO("Not yet implemented")
+                }
+            })
+            .subscribe({ t: String? ->
+                Log.e("QwyDo", "收到消息 ： " + t)
+            }, {
+                it.cause
+            })
 
     }
 }
